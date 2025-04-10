@@ -64,10 +64,13 @@ class _MexicoDoorPageState extends State<MexicoDoorPage>
     });
 
     if (isOpen) {
-      await player.resume(); // Reprendre ou jouer
+      await player.stop(); // pour être sûr que rien ne joue
+      await player.seek(Duration.zero); // retour au début
+      await player.play(AssetSource('mexico.mp3'));
     } else {
       await player.stop();
     }
+
 
     setState(() => isProcessing = false);
   }
