@@ -1,13 +1,36 @@
-# 🕰️ Vie Countdown
+# 🇲🇽 Viva Mexico - Flutter App
 
-Une application Flutter fun (et un peu flippante 😅) qui calcule combien de temps il te reste à vivre.  
-Tu entres ta date de naissance, et l'app affiche un compte à rebours basé sur une espérance de vie moyenne de 80 ans.
+**Viva Mexico** est une application mobile ludique développée avec **Flutter**, qui simule une porte mexicaine. Lorsqu'on tape sur la porte, un **personnage mexicain sort** et une **musique traditionnelle se lance**. Le projet a été conçu pour l'apprentissage de Flutter, l'intégration multimédia, et le déploiement multiplateforme (iOS / Android).
 
-## 📱 Aperçu
+---
 
-- Sélectionne ta date de naissance
-- L'app calcule une "date de fin théorique"
-- Affiche le temps restant en temps réel (jours, heures, minutes, secondes)
+## 📱 Capture d'écran
+
+> *(À insérer : capture avec la porte fermée / ouverte + animation du personnage)*
+
+---
+
+## 🛠️ Fonctionnalités
+
+- Ouverture/fermeture d'une porte animée
+- Lecture de son (`mexico.mp3`) à l'ouverture
+- Apparition animée d’un personnage
+- Compatible Android & iOS
+- Animation fluide via `AnimatedPositioned` + `AnimatedOpacity`
+- Gestion complète de l’état via `StatefulWidget`
+
+---
+
+## 📦 Technologies utilisées
+
+| Outil / Langage     | Usage                                |
+|---------------------|--------------------------------------|
+| Flutter             | Framework principal                  |
+| Dart                | Langage de programmation             |
+| audioplayers        | Plugin de lecture audio              |
+| Xcode               | Compilation & test iOS               |
+| Android SDK         | Compilation & test Android           |
+| Visual Studio Code  | IDE principal du projet              |
 
 ---
 
@@ -15,30 +38,19 @@ Tu entres ta date de naissance, et l'app affiche un compte à rebours basé sur 
 
 ### Prérequis
 
-- [Flutter SDK](https://flutter.dev/docs/get-started/install)
-- Un éditeur (Android Studio ou VS Code recommandé)
-- Un simulateur Android/iOS OU un appareil physique
+- Flutter SDK (3.x recommandé)
+- Xcode installé (pour iOS)
+- Android Studio ou émulateur Android
 
 ### Installation
 
 ```bash
-git clone https://github.com/ton-utilisateur/vie_countdown.git
-cd vie_countdown
+git clone https://github.com/tonrepo/mexico-door-app.git
+cd mexico-door-app
 flutter pub get
+```
+### Lancer l’app
+```bash
 flutter run
 ```
-
-###📦 Build APK (Android)
-```bash
-flutter build apk
-```
-
-Le fichier APK se trouvera ici :
-```bash
-build/app/outputs/flutter-apk/app-release.apk
-```
-
-###🍏 Build iOS (nécessite macOS + Xcode)
-```bash
-flutter build ios
-```
+L'app se lancera sur l'appareil connecté ou l'émulateur.
