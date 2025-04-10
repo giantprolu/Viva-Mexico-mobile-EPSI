@@ -27,7 +27,7 @@ class _MexicoDoorPageState extends State<MexicoDoorPage>
     with SingleTickerProviderStateMixin {
   bool isOpen = false;
   bool isProcessing = false;
-  final player = AudioPlayer();
+  AudioPlayer? player;
   late AnimationController _scaleController;
   late Animation<double> _scaleAnimation;
 
@@ -52,35 +52,26 @@ class _MexicoDoorPageState extends State<MexicoDoorPage>
   }
 
   void toggleDoor() async {
-    if (isProcessing) return;
-    setState(() => isProcessing = true);
+  setState(() {
+    isOpen = !isOpen;
+  });
 
-    // Animation scale (touche visuelle)
-    await _scaleController.reverse();
-    await _scaleController.forward();
-
-    setState(() {
-      isOpen = !isOpen;
-    });
-
-    if (isOpen) {
-      await player.stop(); // pour être sûr que rien ne joue
-      await player.seek(Duration.zero); // retour au début
-      await player.play(AssetSource('mexico.mp3'));
-    } else {
-      await player.stop();
-    }
-
-
-    setState(() => isProcessing = false);
+  if (isOpen) {
+    player?.dispose(); // nettoie l'ancien si besoin
+    player = AudioPlayer();
+    await player!.play(AssetSource('mexico.mp3'));
+  } else {
+    await player?.stop();
   }
+}
+
 
   @override
   void dispose() {
-    player.dispose();
-    _scaleController.dispose();
+    player?.dispose();
     super.dispose();
   }
+
 
   @override
   Widget build(BuildContext context) {
