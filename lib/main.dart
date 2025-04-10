@@ -1,98 +1,75 @@
 import 'package:flutter/material.dart';
-// ignore: unused_import
-import 'package:intl/intl.dart';
-import 'dart:async';
+import 'package:audioplayers/audioplayers.dart';
 
-void main() => runApp(VieCountdownApp());
+void main() => runApp(MexicoDoorApp());
 
-class VieCountdownApp extends StatelessWidget {
-  const VieCountdownApp({super.key});
+class MexicoDoorApp extends StatelessWidget {
+  const MexicoDoorApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Countdown de Vie',
-      home: CountdownPage(),
+      title: 'Viva Mexico',
+      debugShowCheckedModeBanner: false,
+      home: MexicoDoorPage(),
     );
   }
 }
 
-class CountdownPage extends StatefulWidget {
-  const CountdownPage({super.key});
+class MexicoDoorPage extends StatefulWidget {
+  const MexicoDoorPage({super.key});
 
   @override
   // ignore: library_private_types_in_public_api
-  _CountdownPageState createState() => _CountdownPageState();
+  _MexicoDoorPageState createState() => _MexicoDoorPageState();
 }
 
-class _CountdownPageState extends State<CountdownPage> {
-  DateTime? birthDate;
-  DateTime? deathDate;
-  Duration? timeLeft;
-  Timer? timer;
+class _MexicoDoorPageState extends State<MexicoDoorPage> {
+  bool isOpen = false;
+  final player = AudioPlayer();
 
-  void pickDate() async {
-    DateTime? date = await showDatePicker(
-      context: context,
-      initialDate: DateTime(2000),
-      firstDate: DateTime(1900),
-      lastDate: DateTime.now(),
-    );
-
-    if (date != null) {
-      setState(() {
-        birthDate = date;
-        deathDate = DateTime(date.year + 80, date.month, date.day);
-      });
-
-      startTimer();
-    }
-  }
-
-  void startTimer() {
-    timer?.cancel();
-    timer = Timer.periodic(Duration(seconds: 1), (_) {
-      final now = DateTime.now();
-      setState(() {
-        timeLeft = deathDate!.difference(now);
-      });
+  void toggleDoor() async {
+    setState(() {
+      isOpen = !isOpen;
     });
+
+    if (isOpen) {
+      await player.play(AssetSource('mexico.mp3'));
+    } else {
+      await player.stop();
+    }
   }
 
   @override
   void dispose() {
-    timer?.cancel();
+    player.dispose();
     super.dispose();
-  }
-
-  String formatDuration(Duration d) {
-    return "${d.inDays} jours, ${d.inHours % 24}h ${d.inMinutes % 60}m ${d.inSeconds % 60}s";
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Countdown de Vie")),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+      backgroundColor: Colors.white,
+      body: GestureDetector(
+        onTap: toggleDoor,
+        child: Stack(
+          alignment: Alignment.center,
           children: [
-            if (birthDate == null) ...[
-              ElevatedButton(
-                onPressed: pickDate,
-                child: Text("Choisis ta date de naissance"),
+            // Porte (ouverte ou fermée)
+            Image.asset(
+              isOpen ? 'assets/doorOpen.png' : 'assets/doorClose.png',
+              width: 250,
+            ),
+
+            // Mexicain qui sort
+            if (isOpen)
+              Positioned(
+                bottom: 100,
+                child: Image.asset(
+                  'assets/mexicain.png',
+                  width: 150,
+                ),
               ),
-            ] else if (timeLeft != null) ...[
-              Text(
-                "Temps qu'il te reste à vivre 😱 :",
-                style: TextStyle(fontSize: 18),
-              ),
-              SizedBox(height: 16),
-              Text(
-                formatDuration(timeLeft!),
-                style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
-              ),
-            ]
           ],
         ),
       ),
