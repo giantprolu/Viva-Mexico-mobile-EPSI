@@ -5,9 +5,11 @@
 ---
 
 ## 📱 Capture d'écran
-
-> *(À insérer : capture avec la porte fermée / ouverte + animation du personnage)*
-
+<p float="left">
+  <img src="https://github.com/user-attachments/assets/e863e953-de79-4cbf-8251-05540746a5de" width="150" />
+  <img src="https://github.com/user-attachments/assets/d344c561-9071-4a46-8335-a0bf599d4d9a" width="150" />
+  <img src="https://github.com/user-attachments/assets/46128f06-acc0-4d8c-be72-c90fa78f3de8" width="150" />
+</p>
 ---
 
 ## 🛠️ Fonctionnalités
