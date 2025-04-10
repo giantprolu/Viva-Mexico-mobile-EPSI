@@ -26,7 +26,6 @@ class MexicoDoorPage extends StatefulWidget {
 class _MexicoDoorPageState extends State<MexicoDoorPage>
     with SingleTickerProviderStateMixin {
   bool isOpen = false;
-  bool isProcessing = false;
   AudioPlayer? player;
   late AnimationController _scaleController;
   late Animation<double> _scaleAnimation;
@@ -34,64 +33,69 @@ class _MexicoDoorPageState extends State<MexicoDoorPage>
   @override
   void initState() {
     super.initState();
-    // Précharger le son
-    player.setSource(AssetSource('mexico.mp3'));
 
-    // Animation scale (effet de tap visuel)
+    // Animation scale (effet visuel de clic)
     _scaleController = AnimationController(
       duration: const Duration(milliseconds: 100),
       vsync: this,
       lowerBound: 0.95,
       upperBound: 1.0,
     );
+
     _scaleAnimation = CurvedAnimation(
       parent: _scaleController,
       curve: Curves.easeInOut,
     );
+
     _scaleController.value = 1.0;
   }
 
   void toggleDoor() async {
-  setState(() {
-    isOpen = !isOpen;
-  });
+    setState(() {
+      isOpen = !isOpen;
+    });
 
-  if (isOpen) {
-    player?.dispose(); // nettoie l'ancien si besoin
-    player = AudioPlayer();
-    await player!.play(AssetSource('mexico.mp3'));
-  } else {
-    await player?.stop();
+    if (isOpen) {
+      // Recrée un nouveau player pour éviter les soucis de relecture
+      player?.dispose();
+      player = AudioPlayer();
+      await player!.play(AssetSource('mexico.mp3'));
+    } else {
+      await player?.stop();
+    }
   }
-}
-
 
   @override
   void dispose() {
     player?.dispose();
+    _scaleController.dispose();
     super.dispose();
   }
-
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       body: GestureDetector(
-        onTap: toggleDoor,
+        onTap: () {
+          _scaleController.forward().then((_) {
+            _scaleController.reverse();
+          });
+          toggleDoor();
+        },
         child: Center(
           child: ScaleTransition(
             scale: _scaleAnimation,
             child: Stack(
               alignment: Alignment.center,
               children: [
-                // Porte (ouverte ou fermée)
+                // Porte ouverte ou fermée
                 Image.asset(
                   isOpen ? 'assets/doorOpen.png' : 'assets/doorClose.png',
                   width: 250,
                 ),
 
-                // Mexicain qui sort avec animation
+                // Apparition du personnage mexicain
                 AnimatedPositioned(
                   duration: const Duration(milliseconds: 600),
                   bottom: isOpen ? 100 : -200,
