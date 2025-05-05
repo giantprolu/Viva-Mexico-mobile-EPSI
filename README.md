@@ -47,7 +47,7 @@
 ### Installation
 
 ```bash
-git clone https://github.com/tonrepo/mexico-door-app.git
+git clone https://github.com/giantprolu/mexico-door-app.git
 cd mexico-door-app
 flutter pub get
 ```
